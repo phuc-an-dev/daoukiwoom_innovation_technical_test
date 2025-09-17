@@ -1,6 +1,7 @@
 package com.example.daoukiwoom_innovation_technical_test.controller;
 
 import com.example.daoukiwoom_innovation_technical_test.dto.request.EmployeeRequest;
+import com.example.daoukiwoom_innovation_technical_test.dto.response.EmployeeProfileResponse;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.SuccessApiResponse;
 import com.example.daoukiwoom_innovation_technical_test.entity.Employee;
 import com.example.daoukiwoom_innovation_technical_test.service.EmployeeService;
@@ -28,5 +29,11 @@ public class EmployeeController {
     public ResponseEntity<?> updateEmployee(@Valid  @RequestBody EmployeeRequest employeeRequest) {
         Employee employee = employeeService.updateEmployee(employeeRequest);
         return ResponseEntity.ok(new SuccessApiResponse<>(employee));
+    }
+
+    @GetMapping("/profile/{employeeId}")
+    public ResponseEntity<?> getEmployeeProfile(@PathVariable String employeeId) {
+        EmployeeProfileResponse employeeProfileResponse = employeeService.getEmployeeProfileById(employeeId);
+        return ResponseEntity.ok(new SuccessApiResponse<>(employeeProfileResponse));
     }
 }

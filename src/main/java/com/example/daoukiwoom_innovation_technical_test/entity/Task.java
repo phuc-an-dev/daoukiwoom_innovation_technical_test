@@ -1,11 +1,9 @@
 package com.example.daoukiwoom_innovation_technical_test.entity;
 
 import com.example.daoukiwoom_innovation_technical_test.enums.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
@@ -13,7 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -23,6 +22,7 @@ public class Task extends BaseEntity {
     Integer id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employee_id", nullable = false, foreignKey = @ForeignKey(name = "fk_tasks_employee"))
+    @JsonIgnore
     Employee employee;
     @Column(nullable = false)
     String taskName;
