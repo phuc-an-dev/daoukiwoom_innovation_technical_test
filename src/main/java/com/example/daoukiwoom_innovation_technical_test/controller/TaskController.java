@@ -4,6 +4,7 @@ import com.example.daoukiwoom_innovation_technical_test.dto.request.TaskRequest;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.SuccessApiResponse;
 import com.example.daoukiwoom_innovation_technical_test.entity.Task;
 import com.example.daoukiwoom_innovation_technical_test.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class TaskController {
     TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<?> createTask(@RequestBody TaskRequest taskRequest) {
+    public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest taskRequest) {
         Task task = taskService.createTask(taskRequest);
         return ResponseEntity.ok(new SuccessApiResponse<>(task));
     }

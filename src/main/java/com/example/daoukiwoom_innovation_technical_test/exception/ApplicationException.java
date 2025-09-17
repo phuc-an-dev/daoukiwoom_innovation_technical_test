@@ -13,6 +13,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public class ApplicationException extends RuntimeException {
     int code = ApplicationResponseCode.UNKNOWN_ERROR;
+
+    public ApplicationException(String message) {
+        super(message);
+    }
+
     public ApplicationException(String message, int code) {
         super(message);
         this.code = code;
