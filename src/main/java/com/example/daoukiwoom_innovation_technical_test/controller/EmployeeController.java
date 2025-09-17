@@ -1,5 +1,6 @@
 package com.example.daoukiwoom_innovation_technical_test.controller;
 
+import com.example.daoukiwoom_innovation_technical_test.dto.request.EmployeeDepartmentRequest;
 import com.example.daoukiwoom_innovation_technical_test.dto.request.EmployeeRequest;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.EmployeeProfileResponse;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.SuccessApiResponse;
@@ -35,5 +36,11 @@ public class EmployeeController {
     public ResponseEntity<?> getEmployeeProfile(@PathVariable String employeeId) {
         EmployeeProfileResponse employeeProfileResponse = employeeService.getEmployeeProfileById(employeeId);
         return ResponseEntity.ok(new SuccessApiResponse<>(employeeProfileResponse));
+    }
+
+    @PutMapping("/department")
+    public ResponseEntity<?> updateEmployeeDepartment(@Valid @RequestBody EmployeeDepartmentRequest departmentRequest) {
+        Employee employee = employeeService.changeEmployeeDepartment(departmentRequest);
+        return ResponseEntity.ok(new SuccessApiResponse<>(employee));
     }
 }

@@ -1,12 +1,15 @@
 package com.example.daoukiwoom_innovation_technical_test.service;
 
+import com.example.daoukiwoom_innovation_technical_test.dto.request.EmployeeDepartmentRequest;
 import com.example.daoukiwoom_innovation_technical_test.dto.request.EmployeeRequest;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.EmployeeProfileResponse;
 import com.example.daoukiwoom_innovation_technical_test.entity.Department;
+import com.example.daoukiwoom_innovation_technical_test.entity.DepartmentHistory;
 import com.example.daoukiwoom_innovation_technical_test.entity.Employee;
 import com.example.daoukiwoom_innovation_technical_test.entity.Task;
 import com.example.daoukiwoom_innovation_technical_test.exception.EntityNotFoundException;
 import com.example.daoukiwoom_innovation_technical_test.mapper.EmployeeMapper;
+import com.example.daoukiwoom_innovation_technical_test.repository.DepartmentHistoryRepository;
 import com.example.daoukiwoom_innovation_technical_test.repository.DepartmentRepository;
 import com.example.daoukiwoom_innovation_technical_test.repository.EmployeeRepository;
 import com.example.daoukiwoom_innovation_technical_test.repository.TaskRepository;
@@ -16,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +31,7 @@ public class EmployeeService {
     EmployeeMapper employeeMapper;
     DepartmentRepository departmentRepository;
     TaskRepository taskRepository;
+    DepartmentHistoryService departmentHistoryService;
 
     public Employee getEmployeeById(String id) {
         return employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee not found with id: " + id));
@@ -52,5 +58,19 @@ public class EmployeeService {
         List<Task> employeeTaskList = taskRepository.findByEmployeeId(employee.getId());
         employeeProfileResponse.setTaskList(employeeTaskList);
         return employeeProfileResponse;
+    }
+
+    @Transactional
+    public Employee changeEmployeeDepartment(EmployeeDepartmentRequest departmentRequest) {
+        // Change employee department
+        Employee employee = getEmployeeById(departmentRequest.getEmployeeId());
+        Department oldDepartment = departmentRepository.findById(employee.getDepartment()).orElse(null);
+        String newDepartmentId = departmentRequest.getDepartmentId();
+        Department newDepartment = departmentRepository.findById(newDepartmentId).orElseThrow(() -> new EntityNotFoundException("Department not found with id: " + newDepartmentId));
+        employee.setDepartment(newDepartmentId);
+        employee = employeeRepository.save(employee);
+        // Insert to department history
+        departmentHistoryService.recordChange(employee, oldDepartment, newDepartment);
+        return employee;
     }
 }
