@@ -32,4 +32,5 @@ public class Task extends BaseEntity {
     @Column(nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
     TaskStatus status;
+    String assignedBy;
 }

@@ -36,4 +36,11 @@ public class TaskController {
         List<Task> tasks = taskService.getTasks(taskQueryRequest);
         return ResponseEntity.ok(new SuccessApiResponse<>(tasks));
     }
+
+    @PutMapping("/{id}/assign")
+    public Task assignTask(@PathVariable("id") Integer taskId,
+                           @RequestParam("assignee_id") String assigneeId,
+                           @RequestParam("assigned_by") String assignedById ) {
+        return taskService.assignTask(taskId, assigneeId, assignedById);
+    }
 }
