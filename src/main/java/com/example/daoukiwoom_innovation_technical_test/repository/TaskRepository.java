@@ -2,9 +2,10 @@ package com.example.daoukiwoom_innovation_technical_test.repository;
 
 import com.example.daoukiwoom_innovation_technical_test.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface TaskRepository extends JpaRepository<Task, Integer> {
+public interface TaskRepository extends JpaRepository<Task, Integer>, JpaSpecificationExecutor<Task> {
     List<Task> findByEmployeeId(String employeeId);
 }

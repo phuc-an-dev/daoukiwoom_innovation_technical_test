@@ -1,18 +1,19 @@
 package com.example.daoukiwoom_innovation_technical_test.controller;
 
+import com.example.daoukiwoom_innovation_technical_test.dto.request.TaskQueryRequest;
 import com.example.daoukiwoom_innovation_technical_test.dto.request.TaskRequest;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.SuccessApiResponse;
 import com.example.daoukiwoom_innovation_technical_test.entity.Task;
+import com.example.daoukiwoom_innovation_technical_test.enums.TaskStatus;
 import com.example.daoukiwoom_innovation_technical_test.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -25,5 +26,14 @@ public class TaskController {
     public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest taskRequest) {
         Task task = taskService.createTask(taskRequest);
         return ResponseEntity.ok(new SuccessApiResponse<>(task));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getTasks(@RequestParam(value = "employee_id", required = false) String employeeId,
+                                      @RequestParam(value = "status", required = false) TaskStatus status,
+                                      @RequestParam(value = "due_date", required = false) String dueDate) {
+        TaskQueryRequest taskQueryRequest = new TaskQueryRequest(employeeId, status, dueDate);
+        List<Task> tasks = taskService.getTasks(taskQueryRequest);
+        return ResponseEntity.ok(new SuccessApiResponse<>(tasks));
     }
 }
