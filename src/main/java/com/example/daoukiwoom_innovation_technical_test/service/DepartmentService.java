@@ -1,9 +1,11 @@
 package com.example.daoukiwoom_innovation_technical_test.service;
 
 import com.example.daoukiwoom_innovation_technical_test.dto.request.DepartmentRequest;
+import com.example.daoukiwoom_innovation_technical_test.dto.response.DepartmentSalaryResponse;
 import com.example.daoukiwoom_innovation_technical_test.entity.Department;
 import com.example.daoukiwoom_innovation_technical_test.exception.ApplicationException;
 import com.example.daoukiwoom_innovation_technical_test.repository.DepartmentRepository;
+import com.example.daoukiwoom_innovation_technical_test.repository.EmployeeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,6 +18,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DepartmentService {
     DepartmentRepository departmentRepository;
+    EmployeeRepository employeeRepository;
 
     public List<Department> getAllDepartments() {
         return departmentRepository.findAll();
@@ -36,4 +39,7 @@ public class DepartmentService {
         return String.format("dept-%03d", num + 1);
     }
 
+    public List<DepartmentSalaryResponse> getAverageSalaries() {
+        return employeeRepository.findAverageSalaryByDepartment();
+    }
 }
