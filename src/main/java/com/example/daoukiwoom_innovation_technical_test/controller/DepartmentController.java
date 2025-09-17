@@ -1,6 +1,7 @@
 package com.example.daoukiwoom_innovation_technical_test.controller;
 
 import com.example.daoukiwoom_innovation_technical_test.dto.request.DepartmentRequest;
+import com.example.daoukiwoom_innovation_technical_test.dto.response.DepartmentDetailResponse;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.DepartmentSalaryResponse;
 import com.example.daoukiwoom_innovation_technical_test.dto.response.SuccessApiResponse;
 import com.example.daoukiwoom_innovation_technical_test.entity.Department;
@@ -37,5 +38,11 @@ public class DepartmentController {
     public ResponseEntity<?> getAverageSalaries() {
         List<DepartmentSalaryResponse> departmentSalaryResponseList = departmentService.getAverageSalaries();
         return ResponseEntity.ok(new SuccessApiResponse<>(departmentSalaryResponseList));
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<?> getDepartmentDetail(@PathVariable("id") String departmentId) {
+        DepartmentDetailResponse departmentDetailResponse = departmentService.getDepartmentDetail(departmentId);
+        return ResponseEntity.ok(new SuccessApiResponse<>(departmentDetailResponse));
     }
 }
